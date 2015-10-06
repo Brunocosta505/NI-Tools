@@ -4,12 +4,12 @@ path = 'test.xlsx'
 wb = open_workbook(path)
 headers = []
 values = []
-output = []
+#output = []
 
 for i in wb.sheets():
 	if i.name == 'Info': # Skip Info sheet
 		continue
-	print ('Sheet: ' + i.name + ', Rows: ' + repr(i.nrows) + ', Cols: ' + repr(i.ncols))	
+	print ("Sheet: " + i.name + ", Rows: " + repr(i.nrows) + ", Cols: " + repr(i.ncols))	
 	for r in range(i.nrows):
 		values = []
 		for c in range(i.ncols):
@@ -21,41 +21,21 @@ for i in wb.sheets():
 		#print (repr(values))
 		#print (repr(values))
 		if r > 2 and i.name == 'Site_BTS':
+		
 			if values[21] == 'Radio Frequency hopping':
 				hop = "RF"
 			else:
 				hop = "Other"
-			output.append('ZEQC:BCF=' + repr(values[10]) + ',BTS=' + repr(values[12]) +
-			',NAME=' + values[3] + ',SEGNAME=' + values[2] + ':CI=' + repr(values[16]) + 
-			',BAND=' + values[33] + ':NCC=' + repr(values[18]) + ',BCC=' + repr(values[19]) + 
-			':MCC=' + repr(values[14]) + ',MNC=' + repr(values[15]) + ',LAC=' + repr(values[17])) #+
-			#output.append('\n')
-			#':HOP=' + hop + ',HSN1=' + values[23] + ';')
+				
+			if values[33] != '': # Get frequency band
+				band = [int(s) for s in values[33].split() if s.isdigit()]	
+				
+			print ("ZEQC:BCF=" + repr(int(values[10])) + ",BTS=" + repr(int(values[12])) +
+			",NAME=" + values[3] + ",SEGNAME=" + values[2] + ":CI=" + repr(int(values[16])) +
+			",BAND=" + int(band) + ":NCC=" + repr(int(values[18])) + ",BCC=" + repr(int(values[19])) +
+			":MCC=" + repr(int(values[14])) + ",MNC=" + repr(int(values[15])) + ",LAC=" + repr(int(values[17])) +
+			":HOP=" + str(hop) + ",HSN1=" + repr(int(values[23])) + ";")
 			#print ('\n')
-			print (output)
-			output = []	
+			#print (output)
+			#output = []	
 	
-
-	
-#sh = wb.sheet_by_index(1)	
-#for (i, values) in enumerate(values):
-#    print (i, values)
-			#cell = sh.cell(iR,iC)
-			#print (cell)
-
-# print number of sheets
-#print ("Number of worksheets: ", wb.nsheets)
-#
-# print sheet names
-#print ("Worksheet name(s):", wb.sheet_names())
-#
-# get the first worksheet
-
-
-# read a cel
-#cell = sh.cell(0,0)
-#print (cell)
-#
-#
-# read a row slice
-#print (sh.row_slice(rowx=0, start_colx=0, end_colx=2))
